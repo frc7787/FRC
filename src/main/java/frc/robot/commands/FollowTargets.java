@@ -9,15 +9,17 @@ public class FollowTargets extends CommandBase {
     private DriveSubsystem m_DriveSubsystem;
     private LimelightSubsystem m_LimelightSubsystem;
   
+    /**
+     * Creates a new ExampleCommand.
+     *
+     * @param subsystem The subsystem used by this command.
+     */
     public FollowTargets(DriveSubsystem subsystem_drive, LimelightSubsystem subsystem_limelight) {
-      m_DriveSubsystem = subsystem_drive;
-      m_LimelightSubsystem= subsystem_limelight;
-
-      // Use addRequirements() here to declare subsystem dependencies.
-      addRequirements(subsystem_drive);
-      double targetPosition = m_LimelightSubsystem.getTargets()[0];
-      double rot = targetPosition/20;
-      m_DriveSubsystem.arcadeDriveSquared(0.0,rot);
+       m_DriveSubsystem = subsystem_drive;
+       m_LimelightSubsystem= subsystem_limelight;
+      // // Use addRequirements() here to declare subsystem dependencies.
+       addRequirements(subsystem_drive);
+      // 
     }
   
     // Called when the command is initially scheduled.
@@ -32,8 +34,9 @@ public class FollowTargets extends CommandBase {
       
       // Use addRequirements() here to declare subsystem dependencies.
       double targetPosition = m_LimelightSubsystem.getTargets()[0];
-      double rot = targetPosition/20;
-      m_DriveSubsystem.arcadeDriveSquared(0.0,rot);
+      //double rot = Math.min(Math.max((targetPosition/5)*(Math.abs(targetPosition)/5),-0.8),0.6);//limit speed 
+      double rot = Math.min(Math.max((targetPosition/Math.abs(targetPosition))*Math.sqrt(Math.abs(targetPosition/20)),-0.8),0.8);
+      m_DriveSubsystem.arcadeDriveSquared(0.0,-rot);
     }
   
     // Called once the command ends or is interrupted.

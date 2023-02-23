@@ -41,7 +41,7 @@ public class LimelightSubsystem extends SubsystemBase{
     } 
     public boolean hasTargets(){
         boolean returnBool =false;
-        if((double)Tv.getNumber(0)>0){// tv.getnumber must be mapped to double
+        if((double)Tv.getNumber(0)>0){//for some reason tv.getnumber must be mapped to double, not int or boolean
             returnBool=true;
         }
         return returnBool;
@@ -53,6 +53,9 @@ public class LimelightSubsystem extends SubsystemBase{
     }
     public CommandBase checkForTargetsCommand() {
         return runOnce( ()->hasTargets());
+    }
+    public CommandBase setPipeline9Command() {
+        return runOnce( ()->this.setPipeline(9));
     }
     
     public CommandBase exampleMethodCommand() {
