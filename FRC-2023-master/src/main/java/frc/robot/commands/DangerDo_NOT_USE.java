@@ -3,11 +3,11 @@ package frc.robot.commands;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class DangerDO_NOT_USE extends CommandBase {
+public class DangerDo_NOT_USE extends CommandBase {
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     private DriveSubsystem m_subsystem;
   
-    public DangerDO_NOT_USE(DriveSubsystem subsystem) {
+    public DangerDo_NOT_USE(DriveSubsystem subsystem) {
       m_subsystem = subsystem;
       // Use addRequirements() here to declare subsystem dependencies.
       addRequirements(subsystem);

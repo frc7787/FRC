@@ -54,7 +54,9 @@ public class LimelightSubsystem extends SubsystemBase{
     public CommandBase checkForTargetsCommand() {
         return runOnce( ()->hasTargets());
     }
-    
+    public CommandBase setPipelineCommand(int pipeline) {
+        return runOnce( ()->setPipeline(pipeline));
+    }
     public CommandBase exampleMethodCommand() {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.

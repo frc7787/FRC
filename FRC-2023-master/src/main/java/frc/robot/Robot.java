@@ -1,11 +1,16 @@
 package frc.robot;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxPIDController;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;//****
-
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.wpilibj.Timer;
 
 
 
@@ -14,16 +19,60 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
   private final LimelightSubsystem LimelightSubsystem = new LimelightSubsystem();//****
+  // private final ArmSubsystem ArmSubsystem1 = new ArmSubsystem();
+  private static final int deviceID = 2;
+  private CANSparkMax m_motor;
+  private SparkMaxPIDController m_pidController;
+  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
+  private int position = 0;
+  private Timer Timer1 = new Timer();
+
 
   
-  
+
   @Override
 
   public void robotInit() {
+
+    // initialize motor
+    m_motor = new CANSparkMax(deviceID, MotorType.kBrushless);
+
+    /**
+     * The restoreFactoryDefaults method can be used to reset the configuration parameters
+     * in the SPARK MAX to their factory default state. If no argument is passed, these
+     * parameters will not persist between power cycles
+     */
+    m_motor.restoreFactoryDefaults();
+
+    /**
+     * In order to use PID functionality for a controller, a SparkMaxPIDController object
+     * is constructed by calling the getPIDController() method on an existing
+     * CANSparkMax object
+     */
+    m_pidController = m_motor.getPIDController();
+
+    // Encoder object created to display position values
+  
+
+    // PID coefficients
+    kP = 0.1; 
+    kI = 1e-4;
+    kD = 1; 
+    kIz = 0; 
+    kFF = 0; 
+    kMaxOutput = 1; 
+    kMinOutput = -1;
+
+    // set PID coefficients
+    m_pidController.setP(kP);
+    m_pidController.setI(kI);
+    m_pidController.setD(kD);
+    m_pidController.setIZone(kIz);
+    m_pidController.setFF(kFF);
+    m_pidController.setOutputRange(kMinOutput, kMaxOutput);
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    
     
   }
 
@@ -40,7 +89,7 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-    CommandScheduler.getInstance().run();
+    //CommandScheduler.getInstance().run();
     
   }
 
@@ -72,6 +121,7 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    Timer1.start();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -81,11 +131,10 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    //double speed1 = joystick.getY()*Math.abs(joystick.getY())*.9;
-    //double speedR = joystick.getX()*Math.abs(joystick.getX())*.8;
-    //driveRear.arcadeDrive(speed1, speedR);
-    //driveFront.arcadeDrive(speed1,speedR);
-    //m_myRobot.arcadeDrive(speed1, speedR);
+    position = (int) Timer1.get();
+   
+    m_pidController.setReference(position, CANSparkMax.ControlType.kPosition);
+
   }
   @Override
   public void testInit() {

@@ -3,8 +3,25 @@ package frc.robot.subsystems;
 import frc.robot.Constants.ArmConstants;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.SparkMaxLimitSwitch;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxLimitSwitch.Type;
 
 public class ArmSubsystem extends SubsystemBase {
+
+
+  public CANSparkMax MotorTest = new CANSparkMax(7, MotorType.kBrushless );
+  private SparkMaxLimitSwitch LimitSwitchForward = MotorTest.getForwardLimitSwitch(Type.kNormallyOpen);
+  private SparkMaxLimitSwitch LimitSwitchReverse = MotorTest.getReverseLimitSwitch(Type.kNormallyOpen);
+  public boolean LimitSwitchForwardPressed(){
+    return LimitSwitchForward.isPressed();
+  }  
+  public boolean LimitSwitchReversePressed(){
+    return LimitSwitchReverse.isPressed();
+  } 
+
     public static float[] getArmPosition(float Theta1, float Theta2) {
 
         // Calculations done in Radians
