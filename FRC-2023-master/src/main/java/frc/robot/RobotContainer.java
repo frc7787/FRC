@@ -2,7 +2,7 @@ package frc.robot;
 
 import frc.robot.Constants.ButtonMappings;
 import frc.robot.commands.FollowTargets;
-import frc.robot.commands.RunMotor;
+import frc.robot.commands.DangerDO_NOT_USE;
 import frc.robot.commands.StopMotor;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -24,7 +24,7 @@ public class RobotContainer {
   private void configureBindings() {
 
     // PS4 bindings
-    new JoystickButton(ps4, ButtonMappings.R1).whileTrue(new RunMotor(DriveSubsystem));//changed to whileTrue
+    new JoystickButton(ps4, ButtonMappings.R1).whileTrue(new DangerDO_NOT_USE(DriveSubsystem));//changed to whileTrue
     new JoystickButton(ps4, ButtonMappings.R1).whileFalse(new StopMotor(DriveSubsystem));//changed to whileFalse
     DriveSubsystem.setDefaultCommand(
           DriveSubsystem.arcadeDriveSquaredCommand(
